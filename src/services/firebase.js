@@ -1,6 +1,6 @@
 // Import the functions you need from the Firebase SDKs you want to use
-import * as firebase from "firebase";
-
+import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDKU9j_ixRJKAu1Z7OyiS22FZGpuCcVxtI",
@@ -12,12 +12,27 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+/*
 let app;
 if (firebase.apps.length === 0) { // check if Firebase is already initialized
     app = firebase.initializeApp(firebaseConfig); // if not, initialize it
 } else {
     app = firebase.app(); // if already initialized, use that one
 }
+const auth = firebase.auth(); */
+
+const handleRegister = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredentials => {
+            const user = userCredentials.user;
+            console.log(user.email);
+        })
+        .catch(error => {
+            console.log(error.message);
+        });
+};
 
 // Export the Firebase app and auth instances for use in other modules
-export { app, auth };
+export { app, auth, handleRegister };
