@@ -31,10 +31,6 @@ export default function App() {
         </Stack.Navigator>
       )}
     </NavigationContainer>
-    /* <View style={styles.container}>
-      <Text>Open up App.js to start working on your app! cambio</Text>
-      <StatusBar style="auto" />
-    </View> ;*/
   );
 }
 
