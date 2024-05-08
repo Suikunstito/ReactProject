@@ -1,4 +1,8 @@
-const API_URL = 'http://192.168.100.27:3000/saludo'; // URL de tu API
+import Config from 'react-native-config';
+
+const IP = Config.IP_SERVER || '';
+console.log('ip conexion:', IP);
+const API_URL = `http://${IP}:3000/saludo`;  // URL de tu API
 
 const obtenerSaludo = async () => {
     try {
@@ -7,6 +11,7 @@ const obtenerSaludo = async () => {
         return data.mensaje;
     } catch (error) {
         console.error('Error al obtener el saludo:', error);
+        console.error('ip conexion:', API_URL);
         return null;
     }
 };
