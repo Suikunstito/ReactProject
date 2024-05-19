@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { handleRegister } from '../services/firebase';
+import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../services/AuthContext';
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
+  const navigation = useNavigation();
+
+  const handleLogin = () => {
+
+    login();
+    // Navegar a la pantalla "Home" dentro del tab navigator
+  };
 
   return (
     <View>
@@ -20,7 +29,7 @@ const LoginComponent = () => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Iniciar sesión" onPress={() => handleRegister(email, password)} />
+      <Button title="Iniciar sesión" onPress={handleLogin} />
     </View>
   );
 };

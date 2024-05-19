@@ -1,22 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { AuthProvider, useAuth } from './src/services/AuthContext';
 import InicioScreen from './src/screens/InicioScreen';
-import React, { useEffect, useState } from 'react';
+import MainTabNavigator from './src/navigation/MainTabNavigator';
 import { obtenerSaludo } from './src/services/apirest';
 
 const Stack = createStackNavigator();
 
-export default function App() {
-  const isLoggedIn = false;
+const AppContent = () => {
+  const { isLoggedIn } = useAuth();
   const [saludo, setSaludo] = useState('');
 
   useEffect(() => {
     obtenerSaludo()
       .then(mensaje => {
         setSaludo(mensaje);
-        console.log('Mensaje de saludo recibido:', mensaje); // Imprimir el mensaje en la consola
+        console.log('Mensaje de saludo recibido:', mensaje);
       })
       .catch(error => console.error('Error al obtener el saludo:', error));
   }, []);
@@ -32,6 +32,12 @@ export default function App() {
       )}
     </NavigationContainer>
   );
+};
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
 }
-
-
