@@ -15,8 +15,8 @@ const RegisterComponent = () => {
   };
 
   return (
-    <View>
-      <Text style={styles.title}>Register Now!</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Registrarse!</Text>
       <TextInput
         style={styles.input}
         placeholder="Your Email"

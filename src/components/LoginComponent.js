@@ -17,8 +17,8 @@ const LoginComponent = () => {
   };
 
   return (
-    <View >
-      <Text style={styles.title}>Welcome!</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Ingresar!</Text>
       <TextInput
         style={styles.input}
         placeholder="Your Email"
