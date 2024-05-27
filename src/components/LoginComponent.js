@@ -41,11 +41,11 @@ const LoginComponent = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 16,
     justifyContent: 'center',
     backgroundColor: '#ffffff'
   },
+  
   title: {
     fontSize: 24,
     fontWeight: 'bold',
