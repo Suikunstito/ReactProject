@@ -1,6 +1,7 @@
 // Import the functions you need from the Firebase SDKs you want to use
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDKU9j_ixRJKAu1Z7OyiS22FZGpuCcVxtI",
@@ -33,6 +34,15 @@ const handleRegister = (email, password) => {
             console.log(error.message);
         });
 };
+export const handleForgotPassword = (email) => {
+    auth.sendPasswordResetEmail(auth,email)
+      .then(() => {
+        console.log('Correo de recuperación enviado');
+      })
+      .catch((error) => {
+        console.error('Error enviando correo de recuperación: ', error);
+      });
+  };
 
 // Export the Firebase app and auth instances for use in other modules
-export { app, auth, handleRegister };
+export { app, auth, handleRegister};
