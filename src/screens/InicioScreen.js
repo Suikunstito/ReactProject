@@ -1,39 +1,46 @@
 import React, { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import LoginComponent from '../components/LoginComponent';
 import RegisterComponent from '../components/RegisterComponent';
-import ForgotPasswordComponent from '../components/ForgotPasswordComponent';
 
 const InicioScreen = () => {
-  const [cambiarComponent, setCambiarComponent] = useState('login'); // Usa 'login' como valor inicial
-  
-  const switchComponent = () => {
-    switch (cambiarComponent) {
-      case 'login':
-        return <LoginComponent />;
-      case 'register':
-        return <RegisterComponent />;
-      case 'forgotPassword':
-        return <ForgotPasswordComponent />;
-      default:
-        return <LoginComponent />;
-    }
-  };
+  const [cambiarComponent, setCambiarComponent] = useState(false);
 
   return (
     <View>
-      {/* Logo de la app */}
-      {switchComponent()}
-      <Button
-        title={cambiarComponent === 'login' ? "¿No tienes perfil? Regístrate" : "¿Tienes perfil? Ingresar"}
-        onPress={() => setCambiarComponent(cambiarComponent === 'login' ? 'register' : 'login')}
-      />
-      <Button
-        title="¿Has olvidado la contraseña?"
-        onPress={() => setCambiarComponent('forgotPassword')}
-      />
+      {cambiarComponent ? (
+        <RegisterComponent />
+      ) : (
+        <LoginComponent />
+      )}
+
+      <TouchableOpacity style={styles.switchButton} onPress={() => setCambiarComponent(!cambiarComponent)}>
+        <Text style={styles.switchButtonText}>
+          {cambiarComponent ? "¿Tienes perfil? Ingresar" : "¿No tienes perfil? Regístrate"}
+        </Text>
+      </TouchableOpacity> 
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#ffffff'
+  },
+  switchButton: {
+    marginTop: 16,
+    padding: 10,
+    alignItems: 'center'
+  },
+  switchButtonText: {
+    color: '#00bfa6',
+    fontWeight: 'bold'
+  }
+});
+
+
 
 export default InicioScreen;

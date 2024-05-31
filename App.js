@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AuthProvider, useAuth } from './src/services/AuthContext';
 import InicioScreen from './src/screens/InicioScreen';
 import MainTabNavigator from './src/navigation/MainTabNavigator';
-import { obtenerSaludo } from './src/services/apirest';
+import APIREST from './src/services/apirest';
 
 const Stack = createStackNavigator();
 
@@ -13,7 +13,7 @@ const AppContent = () => {
   const [saludo, setSaludo] = useState('');
 
   useEffect(() => {
-    obtenerSaludo()
+    APIREST.obtenerSaludo()
       .then(mensaje => {
         setSaludo(mensaje);
         console.log('Mensaje de saludo recibido:', mensaje);
