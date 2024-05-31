@@ -1,27 +1,60 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import APIREST from '../services/apirest'; // Importa la función crearUsuario
+import APIREST from '../services/apirest';
+import Toast from 'react-native-toast-message';
 
 const RegisterComponent = () => {
-  const [nombre, setNombre] = useState(''); // Agrega el estado para el nombre
+  const [nombre, setNombre] = useState(''); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignUp = async () => {
-    if (password === confirmPassword) {
-      const nuevoUsuario = { nombre, email, password }; // Incluye el nombre en el nuevo usuario
-      const resultado = await APIREST.crearUsuario(nuevoUsuario); // Utiliza la función crearUsuario
-      if (resultado) {
-        // Handle success
-        console.log('Usuario creado:', resultado);
-      } else {
-        // Handle error
-        console.log('Error al crear el usuario');
-      }
-    } else {
-      // Handle password mismatch
+    if (!nombre || !email || !password || !confirmPassword) {
+      console.log('Todos los campos son obligatorios');
+      return;
+    }
+
+    if (password !== confirmPassword) {
       console.log('Las contraseñas no coinciden');
+      return;
+    }
+
+    const nuevoUsuario = { nombre, email, password };
+    try {
+      const resultado = await APIREST.crearUsuario(nuevoUsuario);
+      if (resultado.status === 201) {
+        // Handle success
+        console.log('Usuario creado:', resultado.data);
+        Toast.show({
+          type: 'success',
+          text1: 'Usuario creado',
+          text2: 'Registro exitoso',
+        });
+      } else if (resultado.status === 'error') {
+        // Handle specific error message
+        console.log('Error al crear el usuario:', resultado.message);
+        Toast.show({
+          type: 'error',
+          text1: 'Error al crear el usuario',
+          text2: resultado.message,
+        });
+      } else {
+        // Handle unexpected errors
+        console.log('Error al crear el usuario:', resultado.message || 'Error desconocido');
+        Toast.show({
+          type: 'error',
+          text1: 'Error al crear el usuario',
+          text2: resultado.message || 'Error desconocido',
+        });
+      }
+    } catch (error) {
+      console.error('Error inesperado al crear el usuario:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error inesperado',
+        text2: 'Ocurrió un error al crear el usuario',
+      });
     }
   };
 
@@ -57,6 +90,7 @@ const RegisterComponent = () => {
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };

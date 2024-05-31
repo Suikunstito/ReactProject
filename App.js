@@ -9,7 +9,7 @@ import APIREST from './src/services/apirest';
 const Stack = createStackNavigator();
 
 const AppContent = () => {
-  const { isLoggedIn } = useAuth();
+  const { user } = useAuth();
   const [saludo, setSaludo] = useState('');
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const AppContent = () => {
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? (
+      {user ? (
         <MainTabNavigator />
       ) : (
         <Stack.Navigator>

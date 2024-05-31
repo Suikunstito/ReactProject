@@ -1,36 +1,45 @@
-import React, { createContext, useState, useContext } from 'react';
-import APIREST from '../services/apirest'; // Importa la función loginUser del servicio APIREST
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import APIREST from './apirest';
 
-// Crear el contexto
 const AuthContext = createContext();
 
-// Proveedor del contexto
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = async (email, password) => {
-    try {
-      const resultado = await APIREST.loginUser({ email, password }); // Llama a la función loginUser del servicio APIREST
-      if (resultado) {
-        setIsLoggedIn(true);
-      } else {
-        throw new Error('Credenciales incorrectas, authcontext');
+  useEffect(() => {
+    const loadUser = async () => {
+      const userData = await AsyncStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
       }
-    } catch (error) {
-      throw error;
+      setLoading(false);
+    };
+    loadUser();
+  }, []);
+
+  const login = async (credentials) => {
+    const resultado = await APIREST.loginUser(credentials);
+    if (resultado.status === 200) {
+      const userData = { token: resultado.token, userId: resultado.userId };
+      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+    } else {
+      throw new Error(resultado.message);
     }
   };
 
-  const logout = () => {
-    setIsLoggedIn(false);
+  const logout = async () => {
+    await AsyncStorage.removeItem('user');
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook para usar el contexto de autenticación
 export const useAuth = () => useContext(AuthContext);

@@ -11,10 +11,11 @@ const LoginComponent = () => {
 
   const handleLogin = async () => {
     try {
-      await login(email, password); // Llama a la función login con las credenciales
+      const loginUser = {email, password };
+      await login(loginUser); // Llama a la función login con las credenciales
 
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
+      console.error('Error al iniciar sesión: login', error);
       // Manejar el error de inicio de sesión (puede mostrar un mensaje de error al usuario)
     }
   };

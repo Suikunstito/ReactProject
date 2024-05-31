@@ -6,29 +6,43 @@ const APIREST = {
     obtenerSaludo: async () => {
         try {
             const response = await fetch(`${API_URL}/saludo`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
             return data.mensaje;
         } catch (error) {
             console.error('Error al obtener el saludo:', error);
             return null;
         }
-
     },
-    
+
     loginUser: async (credenciales) => {
         try {
-            const response = await fetch(`${API_URL}/login`, {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(credenciales),
             });
+        
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
-            return data;
+            return {
+                status: response.status,
+                token: data.token,   // Store the token
+                userId: data.userId  // Store the user ID
+            };
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
-            return null;
+            return {
+                status: 'error',
+                message: error.message
+            };
         }
     },
 
@@ -41,11 +55,23 @@ const APIREST = {
                 },
                 body: JSON.stringify(usuario),
             });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+            }
+    
             const data = await response.json();
-            return data;
+            return {
+                status: response.status,
+                data: data
+            };
         } catch (error) {
             console.error('Error al crear el usuario:', error);
-            return null;
+            return {
+                status: 'error',
+                message: error.message
+            };
         }
     },
 
