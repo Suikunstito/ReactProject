@@ -1,22 +1,39 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { handleRegister } from '../services/firebase';
+import APIREST from '../services/apirest'; // Importa la función crearUsuario
+
 const RegisterComponent = () => {
+  const [nombre, setNombre] = useState(''); // Agrega el estado para el nombre
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (password === confirmPassword) {
-      handleRegister(email, password);
+      const nuevoUsuario = { nombre, email, password }; // Incluye el nombre en el nuevo usuario
+      const resultado = await APIREST.crearUsuario(nuevoUsuario); // Utiliza la función crearUsuario
+      if (resultado) {
+        // Handle success
+        console.log('Usuario creado:', resultado);
+      } else {
+        // Handle error
+        console.log('Error al crear el usuario');
+      }
     } else {
       // Handle password mismatch
+      console.log('Las contraseñas no coinciden');
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registrarse!</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Your Name" // Agrega un campo para el nombre
+        value={nombre}
+        onChangeText={setNombre}
+      />
       <TextInput
         style={styles.input}
         placeholder="Your Email"
@@ -43,6 +60,7 @@ const RegisterComponent = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

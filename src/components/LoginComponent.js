@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../services/AuthContext';
-
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('');
@@ -10,10 +9,14 @@ const LoginComponent = () => {
   const { login } = useAuth();
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    try {
+      await login(email, password); // Llama a la función login con las credenciales
 
-    login();
-    // Navegar a la pantalla "Home" dentro del tab navigator
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      // Manejar el error de inicio de sesión (puede mostrar un mensaje de error al usuario)
+    }
   };
 
   return (
