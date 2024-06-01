@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Button, TextInput } from 'react-native';
+import { View, StyleSheet, Button, TextInput, FlatList, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import APIREST from '../services/apirest'; // Asegúrate de importar tus servicios API
 
 const HomeScreen = ({ navigation }) => {
   const [region, setRegion] = useState(null);
@@ -23,13 +24,17 @@ const HomeScreen = ({ navigation }) => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
+
+      // Fetch businesses from API
+      const fetchedBusinesses = await APIREST.obtenerNegocios();
+      setBusinesses(fetchedBusinesses);
     })();
   }, []);
 
   const handleSearch = () => {
     const filteredBusinesses = businesses.filter(business => 
-      business.name.toLowerCase().includes(search.toLowerCase()) ||
-      business.description.toLowerCase().includes(search.toLowerCase())
+      business.nombre.toLowerCase().includes(search.toLowerCase()) ||
+      business.descripcion.toLowerCase().includes(search.toLowerCase())
     );
     setBusinesses(filteredBusinesses);
   };
@@ -51,14 +56,26 @@ const HomeScreen = ({ navigation }) => {
           {businesses.map((business, index) => (
             <Marker
               key={index}
-              coordinate={{ latitude: business.latitude, longitude: business.longitude }}
-              title={business.name}
-              description={business.description}
+              coordinate={{ 
+                latitude: business.latitude || region.latitude, 
+                longitude: business.longitude || region.longitude 
+              }}
+              title={business.nombre}
+              description={business.descripcion}
             />
           ))}
         </MapView>
       )}
-      <Button title="Agregar Negocio" onPress={() => navigation.navigate('AddBusiness', { setBusinesses })} />
+      <FlatList
+        data={businesses}
+        keyExtractor={(item) => item._id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.businessItem}>
+            <Text>{item.nombre}</Text>
+            <Text>{item.descripcion}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
@@ -76,6 +93,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 8,
     margin: 10,
+  },
+  businessItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 });
 

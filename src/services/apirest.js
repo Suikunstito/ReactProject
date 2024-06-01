@@ -135,10 +135,25 @@ const APIREST = {
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error('Error al crear el negocio:', error);
+            console.error('Error al agregar el negocio:', error);
             return null;
         }
     },
+
+    obtenerNegocioPorPropietarioId: async (propietarioId) => {
+        try {
+            const response = await fetch(`${API_URL}/negocios/propietario/${propietarioId}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error al obtener el negocio por propietarioId:', error);
+            return null;
+        }
+    },
+
     obtenerNegocios: async () => {
         try {
             const response = await fetch(`${API_URL}/negocios`);
