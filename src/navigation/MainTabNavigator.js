@@ -8,10 +8,22 @@ const Tab = createBottomTabNavigator();
 
 const MainTabNavigator = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Negocios Cercanos' }}/>
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Negocio" component={NegocioScreen} />
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen 
+        name="Home" 
+        component={HomeScreen} 
+        options={{ title: 'Negocios Cercanos' }} 
+      />
+      <Tab.Screen 
+        name="Profile" 
+        component={ProfileScreen} 
+        options={{ title: 'User Profile' }} 
+      />
+      <Tab.Screen 
+        name="Negocio" 
+        component={NegocioScreen} 
+        options={{ title: 'Negocio' }} 
+      />
     </Tab.Navigator>
   );
 };
