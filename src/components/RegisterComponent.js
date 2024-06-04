@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import APIREST from '../services/apirest';
+import APIREST from '../services/Apirest';
 import Toast from 'react-native-toast-message';
 
 const RegisterComponent = () => {

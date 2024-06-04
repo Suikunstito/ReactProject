@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import { useAuth } from '../services/AuthContext';
-import APIREST from '../services/apirest';
+import APIREST from '../services/Apirest';
 import Header from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, TextInput, FlatList, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import APIREST from '../services/apirest';
+import APIREST from '../services/Apirest';
 import Header from '../components/Header';
 
 const HomeScreen = ({ navigation }) => {

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useAuth } from '../services/AuthContext';
-import APIREST from '../services/apirest';
+import APIREST from '../services/Apirest';
 import { Ionicons } from '@expo/vector-icons'; // Asegúrate de tener esto instalado: expo install @expo/vector-icons
 
 const NegocioScreen = ({ navigation }) => {

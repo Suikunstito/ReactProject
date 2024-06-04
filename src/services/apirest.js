@@ -2,7 +2,6 @@ import Config from 'react-native-config';
 
 const API_URL = Config.API_URL || 'https://sharing-driving-albacore.ngrok-free.app';  // URL de tu API
 
-
 const APIREST = {
     obtenerSaludo: async () => {
         try {

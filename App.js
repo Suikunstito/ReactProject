@@ -4,7 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AuthProvider, useAuth } from './src/services/AuthContext';
 import InicioScreen from './src/screens/InicioScreen';
 import MainTabNavigator from './src/navigation/MainTabNavigator';
-import APIREST from './src/services/apirest';
+import APIREST from './src/services/Apirest';
+import ErrorHandler from './src/components/ErrorHandler';
 
 const Stack = createStackNavigator();
 
@@ -39,7 +40,9 @@ const AppContent = () => {
 export default function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <ErrorHandler>
+        <AppContent />
+      </ErrorHandler>
     </AuthProvider>
   );
 }
