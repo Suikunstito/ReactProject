@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, TextInput, FlatList, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import APIREST from '../services/apirest'; // Asegúrate de importar tus servicios API
+import APIREST from '../services/apirest';
+import Header from '../components/Header';
 
 const HomeScreen = ({ navigation }) => {
   const [region, setRegion] = useState(null);
@@ -32,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const handleSearch = () => {
-    const filteredBusinesses = businesses.filter(business => 
+    const filteredBusinesses = businesses.filter(business =>
       business.nombre.toLowerCase().includes(search.toLowerCase()) ||
       business.descripcion.toLowerCase().includes(search.toLowerCase())
     );
@@ -41,6 +42,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Header title="Negocios Cercanos" />
       <TextInput
         style={styles.searchInput}
         placeholder="Buscar negocios o productos"
@@ -48,43 +50,43 @@ const HomeScreen = ({ navigation }) => {
         onChangeText={setSearch}
       />
       <Button title="Buscar" onPress={handleSearch} />
-      {region && (
-        <MapView
-          style={styles.map}
-          region={region}
-        >
-          {businesses.map((business, index) => (
-            <Marker
-              key={index}
-              coordinate={{ 
-                latitude: business.latitude || region.latitude, 
-                longitude: business.longitude || region.longitude 
-              }}
-              title={business.nombre}
-              description={business.descripcion}
-            />
-          ))}
-        </MapView>
-      )}
-      <FlatList
-        data={businesses}
-        keyExtractor={(item) => item._id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.businessItem}>
-            <Text>{item.nombre}</Text>
-            <Text>{item.descripcion}</Text>
-          </View>
+      <View style={styles.contentContainer}>
+        {region && (
+          <MapView
+            style={styles.map}
+            region={region}
+          >
+            {businesses.map((business, index) => (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: business.latitude || region.latitude,
+                  longitude: business.longitude || region.longitude
+                }}
+                title={business.nombre}
+                description={business.descripcion}
+              />
+            ))}
+          </MapView>
         )}
-      />
+        <FlatList
+          data={businesses}
+          keyExtractor={(item) => item._id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.businessItem}>
+              <Text style={styles.businessName}>{item.nombre}</Text>
+              <Text style={styles.businessDescription}>{item.descripcion}</Text>
+            </View>
+          )}
+          style={styles.businessList}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  map: {
     flex: 1,
   },
   searchInput: {
@@ -94,10 +96,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     margin: 10,
   },
+  contentContainer: {
+    flex: 1,
+  },
+  map: {
+    flex: 1,
+  },
+  businessList: {
+    flex: 1,
+  },
   businessItem: {
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+  },
+  businessName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  businessDescription: {
+    fontSize: 14,
+    color: '#666',
   },
 });
 

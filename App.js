@@ -24,7 +24,9 @@ const AppContent = () => {
   return (
     <NavigationContainer>
       {user ? (
-        <MainTabNavigator />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Main" component={MainTabNavigator} />
+        </Stack.Navigator>
       ) : (
         <Stack.Navigator>
           <Stack.Screen name="Login" component={InicioScreen} />
